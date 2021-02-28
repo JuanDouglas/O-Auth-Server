@@ -180,7 +180,13 @@
     <Compile Include="Models\Authorization.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FailAttemp.cs">
+      <DependentUpon>OAuthDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IP.cs">
+      <DependentUpon>OAuthDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LoginFirstStep.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OAuthDBModel.Context.cs">
@@ -211,8 +217,8 @@
     <Content Include="Global.asax" />
     <Content Include="Models\OAuthDBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>OAuthDBModel.Context.cs</LastGenOutput>
       <DependentUpon>OAuthDBModel.edmx</DependentUpon>
+      <LastGenOutput>OAuthDBModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\OAuthDBModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

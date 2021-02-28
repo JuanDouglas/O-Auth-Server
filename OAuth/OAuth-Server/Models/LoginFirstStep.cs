@@ -12,23 +12,21 @@ namespace OAuth.Server.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Authentication
+    public partial class LoginFirstStep
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Authentication()
+        public LoginFirstStep()
         {
-            this.Authorization = new HashSet<Authorization>();
+            this.Authentication = new HashSet<Authentication>();
         }
     
         public int ID { get; set; }
-        public string User_Agent { get; set; }
-        public string IP { get; set; }
-        public string Token { get; set; }
-        public int LoginFirstStep { get; set; }
         public System.DateTime Date { get; set; }
+        public int Account { get; set; }
+        public string Token { get; set; }
     
-        public virtual LoginFirstStep LoginFirstStep1 { get; set; }
+        public virtual Account Account1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Authorization> Authorization { get; set; }
+        public virtual ICollection<Authentication> Authentication { get; set; }
     }
 }

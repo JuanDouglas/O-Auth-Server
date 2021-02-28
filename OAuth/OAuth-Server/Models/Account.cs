@@ -17,8 +17,7 @@ namespace OAuth.Server.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
-            this.Authorization = new HashSet<Authorization>();
-            this.Authentication = new HashSet<Authentication>();
+            this.LoginFirstStep = new HashSet<LoginFirstStep>();
         }
     
         public int ID { get; set; }
@@ -28,8 +27,6 @@ namespace OAuth.Server.Models
         public System.DateTime CreateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Authorization> Authorization { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Authentication> Authentication { get; set; }
+        public virtual ICollection<LoginFirstStep> LoginFirstStep { get; set; }
     }
 }

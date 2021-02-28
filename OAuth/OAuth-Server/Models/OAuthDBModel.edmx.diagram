@@ -10,6 +10,10 @@
         <EntityTypeShape EntityType="Model.Authorization" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="Model.FK__Authoriza__Accou__2B3F6F97" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK__Authoriza__Appli__2C3393D0" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.Authentication" Width="1.5" PointX="3" PointY="5" />
+        <EntityTypeShape EntityType="Model.IP" Width="1.5" PointX="5.375" PointY="0.75" />
+        <AssociationConnector Association="Model.FK__Authentic__Accou__2F10007B" />
+        <AssociationConnector Association="Model.FK__Authoriza__Authe__32E0915F" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

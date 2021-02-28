@@ -12,17 +12,23 @@ namespace OAuth.Server.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Authorization
+    public partial class Authentication
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Authentication()
+        {
+            this.Authorization = new HashSet<Authorization>();
+        }
+    
         public int ID { get; set; }
+        public string User_Agent { get; set; }
+        public string IP { get; set; }
+        public string Token { get; set; }
         public int Account { get; set; }
-        public int Application { get; set; }
-        public int Level { get; set; }
         public System.DateTime Date { get; set; }
-        public int Authentication { get; set; }
     
         public virtual Account Account1 { get; set; }
-        public virtual Application Application1 { get; set; }
-        public virtual Authentication Authentication1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Authorization> Authorization { get; set; }
     }
 }

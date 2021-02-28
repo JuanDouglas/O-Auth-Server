@@ -9,6 +9,8 @@ namespace OAuth.Server.Controllers
     [RoutePrefix("api/OAuth/Login")]
     public class LoginsController : ApiController
     {
-
+        public IHttpActionResult LoginFirstStep(string username) { 
+        
+        }
     }
 }

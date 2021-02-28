@@ -18,14 +18,18 @@ namespace OAuth.Server.Models
         public Account()
         {
             this.Authorization = new HashSet<Authorization>();
+            this.Authentication = new HashSet<Authentication>();
         }
     
         public int ID { get; set; }
         public string Key { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public System.DateTime CreateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Authorization> Authorization { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Authentication> Authentication { get; set; }
     }
 }

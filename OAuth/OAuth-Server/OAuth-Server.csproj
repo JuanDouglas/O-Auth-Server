@@ -174,7 +174,13 @@
     <Compile Include="Models\Application.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Authentication.cs">
+      <DependentUpon>OAuthDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Authorization.cs">
+      <DependentUpon>OAuthDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IP.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OAuthDBModel.Context.cs">

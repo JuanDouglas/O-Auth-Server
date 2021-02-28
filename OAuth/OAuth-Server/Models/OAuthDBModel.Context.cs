@@ -28,5 +28,7 @@ namespace OAuth.Server.Models
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<Application> Application { get; set; }
         public virtual DbSet<Authorization> Authorization { get; set; }
+        public virtual DbSet<Authentication> Authentication { get; set; }
+        public virtual DbSet<IP> IP { get; set; }
     }
 }

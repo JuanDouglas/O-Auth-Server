@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="ID" />
@@ -13,6 +13,7 @@
           <Property Name="Key" Type="varchar" MaxLength="300" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Application">
           <Key>
@@ -23,29 +24,52 @@
           <Property Name="Redirect URL" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Site" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="Authentication">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User-Agent" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="IP" Type="varchar" MaxLength="89" Nullable="false" />
+          <Property Name="Token" Type="varchar" MaxLength="86" Nullable="false" />
+          <Property Name="Account" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Authorization">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Account" Type="int" Nullable="false" />
+          <Property Name="Authentication" Type="int" Nullable="false" />
           <Property Name="Application" Type="int" Nullable="false" />
           <Property Name="Level" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Authoriza__Accou__2B3F6F97">
+        <EntityType Name="IP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IP" Type="varchar" MaxLength="89" Nullable="false" />
+          <Property Name="Confiance" Type="int" Nullable="false" />
+          <Property Name="AlreadyBeenBanned" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Authentic__Accou__2F10007B">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
-          <End Role="Authorization" Type="Self.Authorization" Multiplicity="*" />
+          <End Role="Authentication" Type="Self.Authentication" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Account">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Authorization">
+            <Dependent Role="Authentication">
               <PropertyRef Name="Account" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Authoriza__Appli__2C3393D0">
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK__Authenticati__IP__300424B4' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK__Authenticati__IP__300424B4" />-->
+        <Association Name="FK__Authoriza__Appli__33D4B598">
           <End Role="Application" Type="Self.Application" Multiplicity="1" />
           <End Role="Authorization" Type="Self.Authorization" Multiplicity="*" />
           <ReferentialConstraint>
@@ -57,21 +81,38 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Authoriza__Authe__32E0915F">
+          <End Role="Authentication" Type="Self.Authentication" Multiplicity="1" />
+          <End Role="Authorization" Type="Self.Authorization" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authentication">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Authorization">
+              <PropertyRef Name="Authentication" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Application" EntityType="Self.Application" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Authentication" EntityType="Self.Authentication" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Authorization" EntityType="Self.Authorization" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Authoriza__Accou__2B3F6F97" Association="Self.FK__Authoriza__Accou__2B3F6F97">
+          <EntitySet Name="IP" EntityType="Self.IP" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Authentic__Accou__2F10007B" Association="Self.FK__Authentic__Accou__2F10007B">
             <End Role="Account" EntitySet="Account" />
-            <End Role="Authorization" EntitySet="Authorization" />
+            <End Role="Authentication" EntitySet="Authentication" />
           </AssociationSet>
-          <AssociationSet Name="FK__Authoriza__Appli__2C3393D0" Association="Self.FK__Authoriza__Appli__2C3393D0">
+          <AssociationSet Name="FK__Authoriza__Appli__33D4B598" Association="Self.FK__Authoriza__Appli__33D4B598">
             <End Role="Application" EntitySet="Application" />
             <End Role="Authorization" EntitySet="Authorization" />
           </AssociationSet>
+          <AssociationSet Name="FK__Authoriza__Authe__32E0915F" Association="Self.FK__Authoriza__Authe__32E0915F">
+            <End Role="Authentication" EntitySet="Authentication" />
+            <End Role="Authorization" EntitySet="Authorization" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -84,6 +125,8 @@
           <Property Name="UserName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Authorization" Relationship="Self.FK__Authoriza__Accou__2B3F6F97" FromRole="Account" ToRole="Authorization" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Authentication" Relationship="Model.FK__Authentic__Accou__2F10007B" FromRole="Account" ToRole="Authentication" />
         </EntityType>
         <EntityType Name="Application">
           <Key>
@@ -106,6 +149,8 @@
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Account1" Relationship="Self.FK__Authoriza__Accou__2B3F6F97" FromRole="Authorization" ToRole="Account" />
           <NavigationProperty Name="Application1" Relationship="Self.FK__Authoriza__Appli__2C3393D0" FromRole="Authorization" ToRole="Application" />
+          <Property Name="Authentication" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Authentication1" Relationship="Model.FK__Authoriza__Authe__32E0915F" FromRole="Authorization" ToRole="Authentication" />
         </EntityType>
         <Association Name="FK__Authoriza__Accou__2B3F6F97">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
@@ -143,7 +188,63 @@
             <End Role="Application" EntitySet="Application" />
             <End Role="Authorization" EntitySet="Authorization" />
           </AssociationSet>
+          <EntitySet Name="Authentication" EntityType="Model.Authentication" />
+          <EntitySet Name="IP" EntityType="Model.IP" />
+          <AssociationSet Name="FK__Authentic__Accou__2F10007B" Association="Model.FK__Authentic__Accou__2F10007B">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Authentication" EntitySet="Authentication" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Authoriza__Authe__32E0915F" Association="Model.FK__Authoriza__Authe__32E0915F">
+            <End Role="Authentication" EntitySet="Authentication" />
+            <End Role="Authorization" EntitySet="Authorization" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Authentication">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Agent" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="IP" Type="String" Nullable="false" MaxLength="89" FixedLength="false" Unicode="false" />
+          <Property Name="Token" Type="String" Nullable="false" MaxLength="86" FixedLength="false" Unicode="false" />
+          <Property Name="Account" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Account1" Relationship="Model.FK__Authentic__Accou__2F10007B" FromRole="Authentication" ToRole="Account" />
+          <NavigationProperty Name="Authorization" Relationship="Model.FK__Authoriza__Authe__32E0915F" FromRole="Authentication" ToRole="Authorization" />
+        </EntityType>
+        <EntityType Name="IP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IP1" Type="String" Nullable="false" MaxLength="89" FixedLength="false" Unicode="false" />
+          <Property Name="Confiance" Type="Int32" Nullable="false" />
+          <Property Name="AlreadyBeenBanned" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Authentic__Accou__2F10007B">
+          <End Type="Model.Account" Role="Account" Multiplicity="1" />
+          <End Type="Model.Authentication" Role="Authentication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Authentication">
+              <PropertyRef Name="Account" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Authoriza__Authe__32E0915F">
+          <End Type="Model.Authentication" Role="Authentication" Multiplicity="1" />
+          <End Type="Model.Authorization" Role="Authorization" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authentication">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Authorization">
+              <PropertyRef Name="Authentication" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -153,6 +254,7 @@
           <EntitySetMapping Name="Account">
             <EntityTypeMapping TypeName="Model.Account">
               <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -173,11 +275,33 @@
           <EntitySetMapping Name="Authorization">
             <EntityTypeMapping TypeName="Model.Authorization">
               <MappingFragment StoreEntitySet="Authorization">
+                <ScalarProperty Name="Authentication" ColumnName="Authentication" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Account" ColumnName="Account" />
                 <ScalarProperty Name="Application" ColumnName="Application" />
                 <ScalarProperty Name="Level" ColumnName="Level" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Authentication">
+            <EntityTypeMapping TypeName="Model.Authentication">
+              <MappingFragment StoreEntitySet="Authentication">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="User_Agent" ColumnName="User-Agent" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IP">
+            <EntityTypeMapping TypeName="Model.IP">
+              <MappingFragment StoreEntitySet="IP">
+                <ScalarProperty Name="AlreadyBeenBanned" ColumnName="AlreadyBeenBanned" />
+                <ScalarProperty Name="Confiance" ColumnName="Confiance" />
+                <ScalarProperty Name="IP1" ColumnName="IP" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

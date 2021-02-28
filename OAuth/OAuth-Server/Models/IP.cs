@@ -12,17 +12,11 @@ namespace OAuth.Server.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Authorization
+    public partial class IP
     {
         public int ID { get; set; }
-        public int Account { get; set; }
-        public int Application { get; set; }
-        public int Level { get; set; }
-        public System.DateTime Date { get; set; }
-        public int Authentication { get; set; }
-    
-        public virtual Account Account1 { get; set; }
-        public virtual Application Application1 { get; set; }
-        public virtual Authentication Authentication1 { get; set; }
+        public string IP1 { get; set; }
+        public int Confiance { get; set; }
+        public bool AlreadyBeenBanned { get; set; }
     }
 }

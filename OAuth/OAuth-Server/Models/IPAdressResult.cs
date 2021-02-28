@@ -22,7 +22,9 @@ namespace OAuth.Server.Models
         public bool AlreadyBeenBanned { get; set; }
         public IPAdressResult(IP iP)
         {
-           
+            Adress = iP.Adress;
+            Confiance = (IPConfiance)Enum.Parse(typeof(IPConfiance),iP.Confiance.ToString());
+            AlreadyBeenBanned = iP.AlreadyBeenBanned;
         }
     }
 }

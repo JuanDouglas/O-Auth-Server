@@ -45,6 +45,8 @@ namespace OAuth.Server
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            config.Formatters.Remove(
+                config.Formatters.XmlFormatter);
         }
     }
 }

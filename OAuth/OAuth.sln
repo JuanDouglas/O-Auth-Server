@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth-Server", "OAuth-Server\OAuth-Server.csproj", "{AE5A498C-FB9F-4A30-A322-706328DD0C75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth-Server.Tests", "OAuth-Server.Tests\OAuth-Server.Tests.csproj", "{EC28F84E-ECB8-4D98-8457-C7B52EDEE89A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE5A498C-FB9F-4A30-A322-706328DD0C75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE5A498C-FB9F-4A30-A322-706328DD0C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE5A498C-FB9F-4A30-A322-706328DD0C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE5A498C-FB9F-4A30-A322-706328DD0C75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC28F84E-ECB8-4D98-8457-C7B52EDEE89A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC28F84E-ECB8-4D98-8457-C7B52EDEE89A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC28F84E-ECB8-4D98-8457-C7B52EDEE89A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC28F84E-ECB8-4D98-8457-C7B52EDEE89A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23D4004E-6DFB-451E-9892-C082AE75A1FF}
+	EndGlobalSection
+EndGlobal

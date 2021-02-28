@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="ID" />
@@ -30,7 +30,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="User-Agent" Type="varchar" MaxLength="300" Nullable="false" />
-          <Property Name="IP" Type="varchar" MaxLength="89" Nullable="false" />
+          <Property Name="IPAdress" Type="varchar" MaxLength="89" Nullable="false" />
           <Property Name="Token" Type="varchar" MaxLength="86" Nullable="false" />
           <Property Name="LoginFirstStep" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
@@ -50,17 +50,17 @@ warning 6002: The table/view 'Nexus OAuth.dbo.FailAttemp' does not have a primar
         <EntityType Name="FailAttemp">
           <Key>
             <PropertyRef Name="Date" />
-            <PropertyRef Name="IP" />
+            <PropertyRef Name="IPAdress" />
           </Key>
           <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="IP" Type="varchar" MaxLength="89" Nullable="false" />
+          <Property Name="IPAdress" Type="varchar" MaxLength="89" Nullable="false" />
         </EntityType>
         <EntityType Name="IP">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IP" Type="varchar" MaxLength="89" Nullable="false" />
+          <Property Name="Adress" Type="varchar" MaxLength="89" Nullable="false" />
           <Property Name="Confiance" Type="int" Nullable="false" />
           <Property Name="AlreadyBeenBanned" Type="bit" Nullable="false" />
         </EntityType>
@@ -73,7 +73,10 @@ warning 6002: The table/view 'Nexus OAuth.dbo.FailAttemp' does not have a primar
           <Property Name="Account" Type="int" Nullable="false" />
           <Property Name="Token" Type="varchar" MaxLength="300" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Authentic__Login__35BCFE0A">
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK__Authentic__IPAdr__32E0915F' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK__Authentic__IPAdr__32E0915F" />-->
+        <Association Name="FK__Authentic__Login__31EC6D26">
           <End Role="LoginFirstStep" Type="Self.LoginFirstStep" Multiplicity="1" />
           <End Role="Authentication" Type="Self.Authentication" Multiplicity="*" />
           <ReferentialConstraint>
@@ -85,10 +88,7 @@ warning 6002: The table/view 'Nexus OAuth.dbo.FailAttemp' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'FK__Authenticati__IP__36B12243' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK__Authenticati__IP__36B12243" />-->
-        <Association Name="FK__Authoriza__Appli__3A81B327">
+        <Association Name="FK__Authoriza__Appli__36B12243">
           <End Role="Application" Type="Self.Application" Multiplicity="1" />
           <End Role="Authorization" Type="Self.Authorization" Multiplicity="*" />
           <ReferentialConstraint>
@@ -100,7 +100,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__36B12243' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Authoriza__Authe__398D8EEE">
+        <Association Name="FK__Authoriza__Authe__35BCFE0A">
           <End Role="Authentication" Type="Self.Authentication" Multiplicity="1" />
           <End Role="Authorization" Type="Self.Authorization" Multiplicity="*" />
           <ReferentialConstraint>
@@ -113,9 +113,9 @@ warning 6035: The relationship 'FK__Authenticati__IP__36B12243' has columns that
           </ReferentialConstraint>
         </Association>
         <!--Errors Found During Generation:
-warning 6035: The relationship 'FK__FailAttemp__IP__3C69FB99' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK__FailAttemp__IP__3C69FB99" />-->
-        <Association Name="FK__LoginFirs__Accou__31EC6D26">
+warning 6035: The relationship 'FK__FailAttem__IPAdr__38996AB5' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK__FailAttem__IPAdr__38996AB5" />-->
+        <Association Name="FK__LoginFirs__Accou__2E1BDC42">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="LoginFirstStep" Type="Self.LoginFirstStep" Multiplicity="*" />
           <ReferentialConstraint>
@@ -137,28 +137,27 @@ warning 6035: The relationship 'FK__FailAttemp__IP__3C69FB99' has columns that a
           <EntitySet Name="FailAttemp" EntityType="Self.FailAttemp" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [FailAttemp].[Date] AS [Date], 
-    [FailAttemp].[IP] AS [IP]
+    [FailAttemp].[IPAdress] AS [IPAdress]
     FROM [dbo].[FailAttemp] AS [FailAttemp]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__Authentic__Login__35BCFE0A" Association="Self.FK__Authentic__Login__35BCFE0A">
+          <AssociationSet Name="FK__Authentic__Login__31EC6D26" Association="Self.FK__Authentic__Login__31EC6D26">
             <End Role="LoginFirstStep" EntitySet="LoginFirstStep" />
             <End Role="Authentication" EntitySet="Authentication" />
           </AssociationSet>
-          <AssociationSet Name="FK__Authoriza__Appli__3A81B327" Association="Self.FK__Authoriza__Appli__3A81B327">
+          <AssociationSet Name="FK__Authoriza__Appli__36B12243" Association="Self.FK__Authoriza__Appli__36B12243">
             <End Role="Application" EntitySet="Application" />
             <End Role="Authorization" EntitySet="Authorization" />
           </AssociationSet>
-          <AssociationSet Name="FK__Authoriza__Authe__398D8EEE" Association="Self.FK__Authoriza__Authe__398D8EEE">
+          <AssociationSet Name="FK__Authoriza__Authe__35BCFE0A" Association="Self.FK__Authoriza__Authe__35BCFE0A">
             <End Role="Authentication" EntitySet="Authentication" />
             <End Role="Authorization" EntitySet="Authorization" />
           </AssociationSet>
-          <AssociationSet Name="FK__LoginFirs__Accou__31EC6D26" Association="Self.FK__LoginFirs__Accou__31EC6D26">
+          <AssociationSet Name="FK__LoginFirs__Accou__2E1BDC42" Association="Self.FK__LoginFirs__Accou__2E1BDC42">
             <End Role="Account" EntitySet="Account" />
             <End Role="LoginFirstStep" EntitySet="LoginFirstStep" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -189,12 +188,12 @@ warning 6035: The relationship 'FK__FailAttemp__IP__3C69FB99' has columns that a
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="User_Agent" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IP" Type="String" MaxLength="89" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Token" Type="String" MaxLength="86" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LoginFirstStep" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="LoginFirstStep1" Relationship="Self.FK__Authentic__Login__35BCFE0A" FromRole="Authentication" ToRole="LoginFirstStep" />
           <NavigationProperty Name="Authorization" Relationship="Self.FK__Authoriza__Authe__398D8EEE" FromRole="Authentication" ToRole="Authorization" />
+          <Property Name="IPAdress" Type="String" Nullable="false" MaxLength="89" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Authorization">
           <Key>
@@ -213,9 +212,9 @@ warning 6035: The relationship 'FK__FailAttemp__IP__3C69FB99' has columns that a
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IP1" Type="String" MaxLength="89" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Confiance" Type="Int32" Nullable="false" />
           <Property Name="AlreadyBeenBanned" Type="Boolean" Nullable="false" />
+          <Property Name="Adress" Type="String" Nullable="false" MaxLength="89" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="LoginFirstStep">
           <Key>
@@ -231,10 +230,10 @@ warning 6035: The relationship 'FK__FailAttemp__IP__3C69FB99' has columns that a
         <EntityType Name="FailAttemp">
           <Key>
             <PropertyRef Name="Date" />
-            <PropertyRef Name="IP" />
+            <PropertyRef Name="IPAdress" />
           </Key>
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IP" Type="String" MaxLength="89" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IPAdress" Type="String" Nullable="false" MaxLength="89" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK__LoginFirs__Accou__31EC6D26">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
@@ -339,9 +338,9 @@ warning 6035: The relationship 'FK__FailAttemp__IP__3C69FB99' has columns that a
           <EntitySetMapping Name="Authentication">
             <EntityTypeMapping TypeName="Model.Authentication">
               <MappingFragment StoreEntitySet="Authentication">
+                <ScalarProperty Name="IPAdress" ColumnName="IPAdress" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="User_Agent" ColumnName="User-Agent" />
-                <ScalarProperty Name="IP" ColumnName="IP" />
                 <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="LoginFirstStep" ColumnName="LoginFirstStep" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
@@ -362,8 +361,8 @@ warning 6035: The relationship 'FK__FailAttemp__IP__3C69FB99' has columns that a
           <EntitySetMapping Name="IP">
             <EntityTypeMapping TypeName="Model.IP">
               <MappingFragment StoreEntitySet="IP">
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="IP1" ColumnName="IP" />
                 <ScalarProperty Name="Confiance" ColumnName="Confiance" />
                 <ScalarProperty Name="AlreadyBeenBanned" ColumnName="AlreadyBeenBanned" />
               </MappingFragment>
@@ -382,8 +381,8 @@ warning 6035: The relationship 'FK__FailAttemp__IP__3C69FB99' has columns that a
           <EntitySetMapping Name="FailAttemp">
             <EntityTypeMapping TypeName="Model.FailAttemp">
               <MappingFragment StoreEntitySet="FailAttemp">
+                <ScalarProperty Name="IPAdress" ColumnName="IPAdress" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="IP" ColumnName="IP" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

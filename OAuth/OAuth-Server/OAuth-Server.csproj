@@ -180,6 +180,7 @@
     <Compile Include="Models\Authorization.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Enums\IPConfiance.cs" />
     <Compile Include="Models\FailAttemp.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>

@@ -15,8 +15,8 @@ namespace OAuth.Server.Models
     public partial class IP
     {
         public int ID { get; set; }
-        public string IP1 { get; set; }
         public int Confiance { get; set; }
         public bool AlreadyBeenBanned { get; set; }
+        public string Adress { get; set; }
     }
 }

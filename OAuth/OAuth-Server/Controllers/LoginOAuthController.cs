@@ -11,7 +11,7 @@ using System.Web.Http.Description;
 namespace OAuth.Server.Controllers
 {
     [RoutePrefix("api/OAuth/Login")]
-    public class LoginsController : ApiController
+    public class LoginOAuthController : ApiController
     {
         private OAuthEntities db = new OAuthEntities();
         /// <summary>
@@ -22,7 +22,7 @@ namespace OAuth.Server.Controllers
         [HttpGet]
         [Route("FirstStep")]
         [ResponseType(typeof(LoginFirstStepResult))]
-        public async Task<IHttpActionResult> LoginFirstStep(string user, bool is_api,string post)
+        public async Task<IHttpActionResult> LoginFirstStep(string user, bool is_api, string post)
         {
             Account account = db.Account.FirstOrDefault(fs => fs.UserName == user);
             IP userIP = db.IP.FirstOrDefault(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
@@ -82,7 +82,7 @@ namespace OAuth.Server.Controllers
             do
             {
                 loginFirstStep.Token = GenerateToken(TokenSize.Default);
-                if (db.LoginFirstStep.FirstOrDefault(fs=>fs.Token== loginFirstStep.Token)==null)
+                if (db.LoginFirstStep.FirstOrDefault(fs => fs.Token == loginFirstStep.Token) == null)
                 {
                     existEquals = false;
                 }
@@ -101,25 +101,26 @@ namespace OAuth.Server.Controllers
             {
                 return Ok(new LoginFirstStepResult(loginFirstStep));
             }
-    
-            return Redirect(GetUri("OAuth/FirstStep",$"first_step_key={loginFirstStep.Token}&post={post}"));
+
+            return Redirect(GetUri("OAuth/FirstStep", $"first_step_key={loginFirstStep.Token}&post={post}"));
         }
 
-        public async Task<IHttpActionResult> LoginSecondStep(string first_step_key, string post) {
-
+        public async Task<IHttpActionResult> LoginSecondStep(string first_step_key, string post)
+        {
+            LoginFirstStep loginFirstStep = db.LoginFirstStep.FirstOrDefault(fs => fs.);
 
             throw new NotImplementedException();
         }
 
         public enum TokenSize
         {
-            Small = 6,
-            Default = 12,
-            Big = 24,
-            VeryBig = 48,
-            ForWhat = 86
+            Small = 17,
+            Default = 36,
+            Big = 72,
+            VeryBig = 108,
         }
-        public Uri GetUri(string path,string query) {
+        public Uri GetUri(string path, string query)
+        {
             UriBuilder uriBuilder = new UriBuilder(Request.RequestUri);
             uriBuilder.Path = path;
             uriBuilder.Query = query;
@@ -127,8 +128,30 @@ namespace OAuth.Server.Controllers
         }
         public static string GenerateToken(TokenSize tokenSize)
         {
-            int size = (int)tokenSize;
-            throw new NotImplementedException();
+            List<Guid> guids = new List<Guid>();
+            string result = string.Empty;
+            for (int i = 0; i < (int)((int)tokenSize / 36) + 1; i++)
+            {
+                guids.Add(Guid.NewGuid());
+            }
+
+            for (int i = 0; result.Length < (int)tokenSize && guids.Count > i; i++)
+            {
+                string guidString = guids[i].ToString();
+                foreach (char item in guidString)
+                {
+                    if (item != '-')
+                    {
+                        result += item;
+                    }
+
+                    if (result.Length < (int)tokenSize)
+                    {
+                        break;
+                    }
+                }
+            }
+            return result;
         }
     }
 }

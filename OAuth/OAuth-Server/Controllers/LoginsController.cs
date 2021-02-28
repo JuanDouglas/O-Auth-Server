@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OAuth.Server.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,8 +10,10 @@ namespace OAuth.Server.Controllers
     [RoutePrefix("api/OAuth/Login")]
     public class LoginsController : ApiController
     {
-        public IHttpActionResult LoginFirstStep(string username) { 
-        
+        private OAuthEntities db = new OAuthEntities();
+        public IHttpActionResult LoginFirstStep(string username) {
+
+            throw new NotImplementedException();
         }
     }
 }

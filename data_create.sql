@@ -49,4 +49,8 @@ FOREIGN KEY ([Authentication]) REFERENCES [Authentication]([ID]),
 FOREIGN KEY ([Application]) REFERENCES [Application]([ID])
 );
 
-
+CREATE TABLE [FailAttemp](
+[Date] DATETIME NOT NULL,
+[IP] VARCHAR(89) NOT NULL,
+FOREIGN KEY ([IP]) REFERENCES [IP]([IP])
+);

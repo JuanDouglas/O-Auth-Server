@@ -107,7 +107,7 @@ namespace OAuth.Server.Controllers
 
         public async Task<IHttpActionResult> LoginSecondStep(string first_step_key, string post)
         {
-            LoginFirstStep loginFirstStep = db.LoginFirstStep.FirstOrDefault(fs => fs.);
+            LoginFirstStep loginFirstStep = db.LoginFirstStep.FirstOrDefault(fs => fs.Token==first_step_key);
 
             throw new NotImplementedException();
         }

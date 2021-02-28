@@ -9,7 +9,7 @@
     <ProjectGuid>{EC28F84E-ECB8-4D98-8457-C7B52EDEE89A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OAuth_Server.Tests</RootNamespace>
+    <RootNamespace>OAuth.Server.Tests</RootNamespace>
     <AssemblyName>OAuth-Server.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

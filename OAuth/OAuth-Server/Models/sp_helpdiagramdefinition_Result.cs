@@ -10,13 +10,10 @@
 namespace OAuth.Server.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class FailAttemp
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public System.DateTime Date { get; set; }
-        public string IPAdress { get; set; }
-        public int ID { get; set; }
-        public int AttempType { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

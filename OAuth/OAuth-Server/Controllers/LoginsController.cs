@@ -22,7 +22,7 @@ namespace OAuth.Server.Controllers
         [HttpGet]
         [Route("FirstStep")]
         [ResponseType(typeof(LoginFirstStepResult))]
-        public async Task<IHttpActionResult> LoginFirstStep(string user, bool is_api)
+        public async Task<IHttpActionResult> LoginFirstStep(string user, bool is_api,string post)
         {
             Account account = db.Account.FirstOrDefault(fs => fs.UserName == user);
             IP userIP = db.IP.FirstOrDefault(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
@@ -58,7 +58,8 @@ namespace OAuth.Server.Controllers
                 db.FailAttemp.Add(new FailAttemp()
                 {
                     Date = DateTime.UtcNow,
-                    IPAdress = userIP.Adress
+                    IPAdress = userIP.Adress,
+                    AttempType = (int)AttempType.FirstStepAttemp
                 });
                 await db.SaveChangesAsync();
 
@@ -67,7 +68,7 @@ namespace OAuth.Server.Controllers
                     return NotFound();
                 }
 
-                return Redirect(GetUri("OAuth/FirstStepFail", $"user={user}"));
+                return Redirect(GetUri("OAuth/FirstStepFail", $"user={user}&post={post}"));
             }
 
             loginFirstStep = new LoginFirstStep()
@@ -101,7 +102,13 @@ namespace OAuth.Server.Controllers
                 return Ok(new LoginFirstStepResult(loginFirstStep));
             }
     
-            return Redirect(GetUri("OAuth/FirstStep",$"first_step_key={loginFirstStep.Token}"));
+            return Redirect(GetUri("OAuth/FirstStep",$"first_step_key={loginFirstStep.Token}&post={post}"));
+        }
+
+        public async Task<IHttpActionResult> LoginSecondStep(string first_step_key, string post) {
+
+
+            throw new NotImplementedException();
         }
 
         public enum TokenSize

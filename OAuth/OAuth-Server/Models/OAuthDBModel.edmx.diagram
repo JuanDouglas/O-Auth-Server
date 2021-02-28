@@ -16,6 +16,7 @@
         <AssociationConnector Association="Model.FK__Authoriza__Appli__36B12243" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK__Authentic__Login__31EC6D26" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK__Authoriza__Authe__35BCFE0A" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.sysdiagrams" Width="1.5" PointX="2.625" PointY="6.25" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

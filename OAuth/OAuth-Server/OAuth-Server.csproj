@@ -180,6 +180,7 @@
     <Compile Include="Models\Authorization.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Enums\AttempType.cs" />
     <Compile Include="Models\Enums\IPConfiance.cs" />
     <Compile Include="Models\FailAttemp.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
@@ -206,6 +207,15 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>OAuthDBModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>OAuthDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>OAuthDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
+      <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

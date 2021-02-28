@@ -22,10 +22,10 @@ namespace OAuth.Server.Models
     
         public int ID { get; set; }
         public string User_Agent { get; set; }
+        public string IPAdress { get; set; }
         public string Token { get; set; }
         public int LoginFirstStep { get; set; }
         public System.DateTime Date { get; set; }
-        public string IPAdress { get; set; }
     
         public virtual LoginFirstStep LoginFirstStep1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

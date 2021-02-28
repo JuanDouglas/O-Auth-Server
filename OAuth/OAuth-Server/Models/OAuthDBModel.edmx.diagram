@@ -4,18 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7dc117fde59144458fa4a125cdb3b51c" Name="Diagram1">
+      <Diagram DiagramId="9444676ae23f4755b389ac2e4e3af271" Name="Diagram1">
         <EntityTypeShape EntityType="Model.Account" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Application" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Authentication" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Authorization" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.IP" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.LoginFirstStep" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.FailAttemp" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
-        <AssociationConnector Association="Model.FK__LoginFirs__Accou__31EC6D26" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK__Authoriza__Appli__3A81B327" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK__Authentic__Login__35BCFE0A" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK__Authoriza__Authe__398D8EEE" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.FailAttemp" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.IP" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.LoginFirstStep" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK__LoginFirs__Accou__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Authoriza__Appli__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Authentic__Login__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Authoriza__Authe__35BCFE0A" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

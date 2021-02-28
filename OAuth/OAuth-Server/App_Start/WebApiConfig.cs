@@ -20,7 +20,7 @@ namespace OAuth.Server
                     {
                         Provider = "System.Data.SqlClient",
                         ProviderConnectionString = $"{ConnectionString};MultipleActiveResultSets=True;App=EntityFramework;",
-                        Metadata = @"res://*/Models.ShowProductsModel.csdl|res://*/Models.ShowProductsModel.ssdl|res://*/Models.ShowProductsModel.msl"
+                        Metadata = @"res://*/Models.OAuthDBModel.csdl|res://*/Models.OAuthDBModel.ssdl|res://*/Models.OAuthDBModel.msl"
                     };
                     string connectionString = connectionBuilder.ToString();
 

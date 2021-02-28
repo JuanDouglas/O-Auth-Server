@@ -16,7 +16,7 @@ namespace OAuth.Server.Models
     public partial class OAuthEntities : DbContext
     {
         public OAuthEntities()
-            : base("name=OAuthEntities")
+            : base(WebApiConfig.EntityFreameworkConnectionString)
         {
         }
     
@@ -29,8 +29,8 @@ namespace OAuth.Server.Models
         public virtual DbSet<Application> Application { get; set; }
         public virtual DbSet<Authentication> Authentication { get; set; }
         public virtual DbSet<Authorization> Authorization { get; set; }
+        public virtual DbSet<FailAttemp> FailAttemp { get; set; }
         public virtual DbSet<IP> IP { get; set; }
         public virtual DbSet<LoginFirstStep> LoginFirstStep { get; set; }
-        public virtual DbSet<FailAttemp> FailAttemp { get; set; }
     }
 }

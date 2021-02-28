@@ -187,22 +187,24 @@
     <Compile Include="Models\IP.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IPAdressResult.cs" />
     <Compile Include="Models\LoginFirstStep.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\LoginFirstStepResult.cs" />
     <Compile Include="Models\OAuthDBModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>OAuthDBModel.Context.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Models\OAuthDBModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Models\OAuthDBModel.Designer.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>OAuthDBModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -218,13 +220,16 @@
     <Content Include="Global.asax" />
     <Content Include="Models\OAuthDBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>OAuthDBModel.edmx</DependentUpon>
       <LastGenOutput>OAuthDBModel.Context.cs</LastGenOutput>
+      <DependentUpon>OAuthDBModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\OAuthDBModel.edmx.diagram">
+      <DependentUpon>OAuthDBModel.edmx</DependentUpon>
     </Content>
     <Content Include="Models\OAuthDBModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>OAuthDBModel.edmx</DependentUpon>
       <LastGenOutput>OAuthDBModel.cs</LastGenOutput>
+      <DependentUpon>OAuthDBModel.edmx</DependentUpon>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -251,9 +256,6 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>OAuthDBModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\OAuthDBModel.edmx.diagram">
-      <DependentUpon>OAuthDBModel.edmx</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

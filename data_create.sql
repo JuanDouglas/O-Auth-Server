@@ -25,6 +25,8 @@ CREATE TABLE [LoginFirstStep](
 [Date] DATETIME NOT NULL,
 [Account] INTEGER NOT NULL,
 [Token] VARCHAR(300) NOT NULL,
+[IPAdress] VARCHAR(89) NOT NULL,
+FOREIGN KEY ([IPAdress]) REFERENCES [IP]([Adress]),
 FOREIGN KEY ([Account]) REFERENCES [Account]([ID])
 );
 
@@ -50,6 +52,7 @@ FOREIGN KEY ([Application]) REFERENCES [Application]([ID])
 );
 
 CREATE TABLE [FailAttemp](
+[ID] INTEGER IDENTITY PRIMARY KEY NOT NULL, 
 [Date] DATETIME NOT NULL,
 [IPAdress] VARCHAR(89) NOT NULL,
 FOREIGN KEY ([IPAdress]) REFERENCES [IP]([Adress])

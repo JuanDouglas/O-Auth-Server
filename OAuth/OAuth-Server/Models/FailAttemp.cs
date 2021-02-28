@@ -16,5 +16,6 @@ namespace OAuth.Server.Models
     {
         public System.DateTime Date { get; set; }
         public string IPAdress { get; set; }
+        public int ID { get; set; }
     }
 }

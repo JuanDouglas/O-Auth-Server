@@ -24,7 +24,6 @@ namespace OAuth.Server.Tests.Controllers
         }
 
         public void ValidLogin() {
-        LoginOAuthController.
         }
     }
 }

@@ -25,6 +25,7 @@ namespace OAuth.Server.Models
         public int Account { get; set; }
         public string Token { get; set; }
         public string IPAdress { get; set; }
+        public bool Valid { get; set; }
     
         public virtual Account Account1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -6,6 +6,7 @@
         UserNotFound,
         IncorrectPassword,
         SecondStepAttemp,
-        IPNotEqual
+        IPNotEqual,
+        FirstStepInvalid
     }
 }

@@ -90,7 +90,8 @@ namespace OAuth.Server.Controllers
             {
                 Account = account.ID,
                 Date = DateTime.UtcNow,
-                IPAdress = userIP.Adress
+                IPAdress = userIP.Adress,
+                Valid = true
             };
 
             //Obtém um novo token até que não exista nenhum igual.
@@ -166,6 +167,13 @@ namespace OAuth.Server.Controllers
                 post = builder.ToString();
             }
 
+            if (loginFirstStep.Date.AddMinutes(15)>DateTime.UtcNow.AddMinutes(-15))
+            {
+                loginFirstStep.Valid = false;
+                db.Entry(loginFirstStep).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+
             /* 
              * Valida se o IP já esta cadastrado na base de dados.
              * Caso não esteja adicionado irá adicionar ao banco de dados.
@@ -198,6 +206,31 @@ namespace OAuth.Server.Controllers
                     Date = DateTime.UtcNow,
                     IPAdress = userIP.Adress,
                     AttempType = (int)AttempType.SecondStepAttemp
+                });
+                await db.SaveChangesAsync();
+
+                if (!web_view)
+                {
+                    return NotFound();
+                }
+                return Redirect(GetPathQuery("Login/StepFail", new Dictionary<string, string>
+            {
+                { "post", post }
+            }));
+            }
+
+            /*
+             * Valida se o passo ainda é válido.
+             * Caso seja o mesmo desconsidere.
+             * Caso contrário irá retornar não autorizado.
+             */
+            if (!loginFirstStep.Valid)
+            {
+                db.FailAttemp.Add(new FailAttemp()
+                {
+                    Date = DateTime.UtcNow,
+                    IPAdress = userIP.Adress,
+                    AttempType = (int)AttempType.FirstStepInvalid
                 });
                 await db.SaveChangesAsync();
 

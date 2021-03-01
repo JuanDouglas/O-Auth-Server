@@ -1,7 +1,7 @@
 # O-Auth-Server
 Servidor de autenticação OAuth2.0
 
-#Sequence of steps for authorization
+# Sequence of steps for authorization
 - **_1._** Origin Server
 	- C# Code for AuthServer Request.
 ``` C#

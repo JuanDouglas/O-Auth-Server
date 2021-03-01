@@ -226,6 +226,8 @@ namespace OAuth.Server.Controllers
                 });
 
                 await db.SaveChangesAsync();
+                var result = await new HttpClient().GetAsync("");
+                result.;
 
                 if (!web_view)
                 {

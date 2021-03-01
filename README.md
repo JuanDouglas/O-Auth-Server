@@ -5,9 +5,21 @@ Servidor de autenticação OAuth2.0
 - **_1._** Origin Server
 	- C# Code for AuthServer Request.
 ``` C#
+/*
+ * Authenticated request example
+ */
 HttpClient httpClient = new HttpClient();
-string response = await httpClient.SendAsync("https;\\nexus-authentication.duckdns.org\api\OAuth?app_code={your_app_code}&web_view=true");
-NexusOAuth 
+string response = await (await httpClient.GetAsync("https://nexus-authentication.duckdns.org/api/OAuth?app_code={your_app_code}&web_view=true"))
+	.Content.ReadAsStringAsync();
+NexusOAuth oAuth = Newtonsoft.Json.JsonConvert.DeserializeObject<NexusOAuth>(response);
+
+HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
+    new Uri("https://nexus-authentication.duckdns.org"));
+
+httpRequestMessage.Headers.Add("OAuth", NexusOAuth.Token);
+httpRequestMessage.Headers.Add("User", NexusOAuth.User);
+
+var response = await httpClient.SendAsync(httpRequestMessage);
 ```
 - **_2._** Auth Server 
 	- **_2.1._** Get Authorization (_Web View_).

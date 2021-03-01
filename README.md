@@ -1,12 +1,13 @@
 # O-Auth-Server
 Servidor de autenticação OAuth2.0
 
-#Sequence of steps for authorization
+# Sequence of steps for authorization
 - **_1._** Origin Server
 	- C# Code for AuthServer Request.
 ``` C#
 HttpClient httpClient = new HttpClient();
-await httpClient.SendAsync("https;\\nexus-authentication.duckdns.org\api\OAuth?app_code={your_app_code}&web_view=true");
+string response = await httpClient.SendAsync("https;\\nexus-authentication.duckdns.org\api\OAuth?app_code={your_app_code}&web_view=true");
+NexusOAuth 
 ```
 - **_2._** Auth Server 
 	- **_2.1._** Get Authorization (_Web View_).

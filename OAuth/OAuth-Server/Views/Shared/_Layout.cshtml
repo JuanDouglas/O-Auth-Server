@@ -10,24 +10,86 @@
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Nome do aplicativo", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Página Inicial", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        @Html.ActionLink("Show your Products", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">@Html.ActionLink("Página Inicial", "Index", "Home", new { area = "" }, htmlAttributes: new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("API", "Index", "Help", new { area = "" }, htmlAttributes: new { @class = "nav-link" })</li>
+                @{
+                    var login_token_cookie = Request.Cookies["login_token"];
+                    UriBuilder builder = new UriBuilder(Request.Url.AbsoluteUri);
+                    var user_key_cookie = Request.Cookies["user_key"];
+                    string user_key = string.Empty;
+                    string login_token = string.Empty;
+                    string href = string.Empty;
+                    bool logued = false;
+
+
+                    if (user_key_cookie != null)
+                    {
+                        try
+                        {
+                            //var loginInformations =.API.Controllers.LoginController.ValidLogin();
+                            logued = false;
+                            if (!logued)
+                            {
+                                var user_keyCookie = Request.Cookies["user_key"];
+                                user_keyCookie.Expires = DateTime.Now;
+                                Response.Cookies.Set(user_keyCookie);
+                                var login_tokenCookie = Request.Cookies["login_token"];
+                                login_tokenCookie.Expires = DateTime.Now;
+                                Response.Cookies.Set(login_tokenCookie);
+                            }
+                        }
+                        catch (global::System.Exception)
+                        {
+                            user_key = string.Empty;
+                            login_token = string.Empty;
+                        }
+                    }
+
+                }
+                @{
+                    if (logued)
+                    {
+                        <li class="nav-link nav-item dropdown" style="margin-right: 3rem;">
+
+                            <a class="dropdown-toggle text-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.05rem;text-decoration:none">
+                                <img class="img-icon" width="35" height="35" src="~/Resources/ic_company_round.png" />
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item disabled"><b id="TextName">Sua Loja</b></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/Product/MyProducts">Seus produtos</a>
+                                <a class="dropdown-item" href="/Categories/MyCategories">Suas Categorias</a>
+                                @{
+                                    builder.Path = "api/Login/Authetication/Logout";
+
+                                    var parseQuery = HttpUtility.ParseQueryString($"isWeb={true}&login_token={login_token}&user_key={user_key}&thisAdress={true}&ipAdress=");
+                                    parseQuery["url_post"] = Request.Url.AbsoluteUri;
+                                    builder.Query = parseQuery.ToString();
+                                }
+                                <button class="btn btn-outline-danger col-md-10" onclick="location.href='@builder.Uri.AbsoluteUri'" style="padding: 1.4pt;margin: 0.25rem 1rem;width: 80%;">Sair</button>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <form class="form-inline my-2 my-lg-0" style="display: contents;cursor: pointer">
+                                <a href="/Login?post=none" class="text-success" style="font-size: 1.05rem;margin-left:1rem">Entrar</a>
+                            </form>
+                        </li>
+                    }
+                }
+            </ul>
         </div>
-    </div>
+    </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />

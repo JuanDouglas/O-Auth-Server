@@ -1,0 +1,23 @@
+﻿@using OAuth.Server.Models;
+@model AuthModel;
+
+@{
+    ViewBag.Title = "Login Second Step";
+}
+
+<h2>SeconStep</h2>
+
+@using (Html.BeginForm("SecondStep", "api/OAuth/Login", new { post = ViewBag.Post }))
+{
+    Html.Hidden("web_view", true);
+    Html.Hidden("first", true);
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.user, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.user, new { htmlAttributes = new { @class = "form-control", @placeholder = "Seu nome de usuário" } })
+            @Html.ValidationMessageFor(model => model.user, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <input type="submit" class="btn btn-outline-success" value="Próximo" />
+}

@@ -23,16 +23,16 @@ namespace OAuth.Server.Controllers
 
         #region FirstStep
         /// <summary>
-        /// FirstStep fort Login attemp.
+        ///// FirstStep fort Login attemp.
         /// </summary>
         /// <param name="user">User Login.</param>
-        /// <param name="is_api">Request result for API(true) or WebService(false).</param>
+        /// <param name="web_view">Request result for API(true) or WebService(false).</param>
         /// <param name="post">Post Url</param>
         /// <returns></returns>
         [HttpGet]
         [Route("FirstStep")]
         [ResponseType(typeof(LoginFirstStepResult))]
-        public async Task<IHttpActionResult> LoginFirstStepAsync(string user, bool is_api, string post)
+        public async Task<IHttpActionResult> LoginFirstStepAsync(string user, bool web_view, string post)
         {
             Account account = db.Account.FirstOrDefault(fs => fs.UserName == user);
             IP userIP = db.IP.FirstOrDefault(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
@@ -74,7 +74,7 @@ namespace OAuth.Server.Controllers
                 });
                 await db.SaveChangesAsync();
 
-                if (is_api)
+                if (!web_view)
                 {
                     return NotFound();
                 }
@@ -111,11 +111,11 @@ namespace OAuth.Server.Controllers
              * Caso seja de API irá retornar o Objeto: 'LoginFirstStep'.
              * Caso contrário continua o método.
              */
-            if (is_api)
+            if (!web_view)
             {
                 return Ok(new LoginFirstStepResult(loginFirstStep));
             }
-            return Redirect(GetPathQuery("OAuth/FirstStep", new Dictionary<string, string>
+            return Redirect(GetPathQuery("OAuth/SecondStep", new Dictionary<string, string>
             {
                 { "key", loginFirstStep.Token },
                 { "post", post }
@@ -124,12 +124,12 @@ namespace OAuth.Server.Controllers
 
         public Uri GetPathQuery(string path, Dictionary<string, string> keys)
         {
-            var pathQuery = HttpUtility.ParseQueryString(string.Empty);
+            var query = HttpUtility.ParseQueryString(string.Empty);
             foreach (var item in keys)
             {
-                pathQuery.Add(item.Key, item.Value);
+                query.Add(item.Key, item.Value);
             }
-            return GetUri(path, path.ToString());
+            return GetUri(path, query.ToString());
         }
         #endregion
 
@@ -139,19 +139,31 @@ namespace OAuth.Server.Controllers
         /// </summary>
         /// <param name="pwd">Password</param>
         /// <param name="key">First Step Key</param>
-        /// <param name="is_api">Request result for API(true) or WebService(false).</param>
+        /// <param name="web_view">Request result for API(true) or WebService(false).</param>
         /// <param name="post">Defines '{user-key}'</param>
         /// <returns></returns>
         [HttpGet]
         [Route("SecondStep")]
         [ResponseType(typeof(LoginFirstStepResult))]
-        public async Task<IHttpActionResult> LoginSecondStep(string pwd, string key, bool is_api, string post)
+        public async Task<IHttpActionResult> LoginSecondStep(string pwd, string key, bool web_view, string post)
         {
             LoginFirstStep loginFirstStep = db.LoginFirstStep.FirstOrDefault(fs => fs.Token == key);
             IP userIP = db.IP.FirstOrDefault(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
             Account account = db.Account.FirstOrDefault(fs => fs.ID == loginFirstStep.ID);
             HttpResponseMessage httpResponse = new HttpResponseMessage(HttpStatusCode.Redirect);
             bool existEquals = true;
+
+            if (post==null)
+            {
+                post = string.Empty;
+            }
+            if (post==string.Empty||post=="none")
+            {
+                UriBuilder builder = new UriBuilder(Request.RequestUri);
+                builder.Path = string.Empty;
+                builder.Query = string.Empty;
+                post = builder.ToString(); 
+            }
 
             /* 
              * Valida se o IP já esta cadastrado na base de dados.
@@ -188,7 +200,7 @@ namespace OAuth.Server.Controllers
                 });
                 await db.SaveChangesAsync();
 
-                if (is_api)
+                if (!web_view)
                 {
                     return NotFound();
                 }
@@ -215,7 +227,7 @@ namespace OAuth.Server.Controllers
 
                 await db.SaveChangesAsync();
 
-                if (is_api)
+                if (!web_view)
                 {
                     return Unauthorized();
                 }
@@ -242,7 +254,7 @@ namespace OAuth.Server.Controllers
 
                 await db.SaveChangesAsync();
 
-                if (is_api)
+                if (!web_view)
                 {
                     return Unauthorized();
                 }
@@ -272,7 +284,7 @@ namespace OAuth.Server.Controllers
                 }
             } while (existEquals);
 
-            if (is_api)
+            if (!web_view)
             {
                 return Ok(new LoginResult(authentication));
             }

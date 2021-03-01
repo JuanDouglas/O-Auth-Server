@@ -27,6 +27,7 @@ CREATE TABLE [LoginFirstStep](
 [Date] DATETIME NOT NULL,
 [Account] INTEGER NOT NULL,
 [Token] VARCHAR(300) NOT NULL,
+[Valid] BIT NOT NULL,
 [IPAdress] VARCHAR(89) NOT NULL,
 FOREIGN KEY ([IPAdress]) REFERENCES [IP]([Adress]),
 FOREIGN KEY ([Account]) REFERENCES [Account]([ID])

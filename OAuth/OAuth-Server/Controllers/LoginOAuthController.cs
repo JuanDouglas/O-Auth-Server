@@ -3,6 +3,7 @@ using OAuth.Server.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -34,8 +35,8 @@ namespace OAuth.Server.Controllers
         [ResponseType(typeof(LoginFirstStepResult))]
         public async Task<IHttpActionResult> LoginFirstStepAsync(string user, bool web_view, string post)
         {
-            Account account = db.Account.FirstOrDefault(fs => fs.UserName == user);
-            IP userIP = db.IP.FirstOrDefault(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
+            Account account = await db.Account.FirstOrDefaultAsync(fs => fs.UserName == user);
+            IP userIP = await db.IP.FirstOrDefaultAsync(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
             LoginFirstStep loginFirstStep = null;
             bool existEquals = true;
 
@@ -56,7 +57,7 @@ namespace OAuth.Server.Controllers
                 await db.SaveChangesAsync();
 
                 //Atualiza o valor do IP usado no método.
-                userIP = db.IP.FirstOrDefault(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
+                userIP = await db.IP.FirstOrDefaultAsync(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
             }
 
             /*
@@ -96,7 +97,7 @@ namespace OAuth.Server.Controllers
             do
             {
                 loginFirstStep.Token = GenerateToken(TokenSize.Default);
-                if (db.LoginFirstStep.FirstOrDefault(fs => fs.Token == loginFirstStep.Token) == null)
+                if ((await db.LoginFirstStep.FirstOrDefaultAsync(fs => fs.Token == loginFirstStep.Token)) == null)
                 {
                     existEquals = false;
                 }
@@ -145,11 +146,11 @@ namespace OAuth.Server.Controllers
         [HttpGet]
         [Route("SecondStep")]
         [ResponseType(typeof(LoginFirstStepResult))]
-        public async Task<IHttpActionResult> LoginSecondStep(string pwd, string key, bool web_view, string post)
+        public async Task<IHttpActionResult> LoginSecondStepAsync(string pwd, string key, bool web_view, string post)
         {
-            LoginFirstStep loginFirstStep = db.LoginFirstStep.FirstOrDefault(fs => fs.Token == key);
-            IP userIP = db.IP.FirstOrDefault(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
-            Account account = db.Account.FirstOrDefault(fs => fs.ID == loginFirstStep.ID);
+            LoginFirstStep loginFirstStep = await db.LoginFirstStep.FirstOrDefaultAsync(fs => fs.Token == key);
+            IP userIP = await db.IP.FirstOrDefaultAsync(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
+            Account account = await db.Account.FirstOrDefaultAsync(fs => fs.ID == loginFirstStep.ID);
             HttpResponseMessage httpResponse = new HttpResponseMessage(HttpStatusCode.Redirect);
             bool existEquals = true;
 
@@ -182,7 +183,7 @@ namespace OAuth.Server.Controllers
                 await db.SaveChangesAsync();
 
                 //Atualiza o valor do IP usado no método.
-                userIP = db.IP.FirstOrDefault(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
+                userIP = await db.IP.FirstOrDefaultAsync(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
             }
 
             /*
@@ -278,7 +279,7 @@ namespace OAuth.Server.Controllers
             do
             {
                 authentication.Token = GenerateToken(TokenSize.Default);
-                if (db.Authentication.FirstOrDefault(fs => fs.Token == loginFirstStep.Token) == null)
+                if ((await db.Authentication.FirstOrDefaultAsync(fs => fs.Token == loginFirstStep.Token)) == null)
                 {
                     existEquals = false;
                 }
@@ -327,7 +328,7 @@ namespace OAuth.Server.Controllers
 
         #endregion
 
-
+        #region Aux
         public enum TokenSize
         {
             Small = 17,
@@ -335,7 +336,7 @@ namespace OAuth.Server.Controllers
             Big = 72,
             VeryBig = 108,
         }
-        public Uri GetUri(string path, string query)
+        internal Uri GetUri(string path, string query)
         {
             UriBuilder uriBuilder = new UriBuilder(Request.RequestUri);
             uriBuilder.Path = path;
@@ -369,10 +370,162 @@ namespace OAuth.Server.Controllers
             }
             return result;
         }
+        #endregion
 
-        public static string GetQuery(IDictionary<string, string> keyValues)
+        #region ValidUser
+
+        internal async static Task<LoginInformations> ValidLoginAsync(string token, string user_key)
         {
-            throw new NotImplementedException();
+            if (token == null)
+            {
+                token = string.Empty;
+            }
+            if (user_key == null)
+            {
+                user_key = string.Empty;
+            }
+            OAuthEntities db = new OAuthEntities();
+            var context = System.Web.HttpContext.Current;
+
+            //Obtém a autenticação deste usuário
+            Authentication logToken = await db.Authentication.FirstOrDefaultAsync(fs => fs.IPAdress == context.Request.UserHostAddress);
+            if (logToken == null)
+            {
+                return new LoginInformations(user_key, token) { IsValid = false, Message = "This 'login token' does not exist or does not exist on the system or is wrong." };
+            }
+
+            if (!PasswordCompare(logToken.Token, token.ToString()))
+            {
+                return new LoginInformations(user_key, token) { IsValid = false, Message = "This 'login token' does not exist or does not exist on the system or is wrong." };
+            }
+
+            //Valida o IP fornecido
+            if (context.Request.UserHostAddress != logToken.IPAdress)
+            {
+                return new LoginInformations(user_key, token) { IsValid = false, Message = "This 'login token' does not validing for your IP." };
+            }
+
+            //Valida a chave de verificação da tabela User.
+            if (logToken.LoginFirstStep1.Account1.Key != user_key)
+            {
+                return new LoginInformations(user_key, token) { IsValid = false, Message = "This 'login token' does not validing for your IP." };
+            }
+
+            return new LoginInformations(user_key, token) { IsValid = true, Message = "This login validation result is success" };
+        }
+        internal static async Task<LoginInformations> ValidLoginAsync()
+        {
+            try
+            {
+                var loginInformations = GetLoginInformations();
+
+                return await ValidLoginAsync(loginInformations.LoginToken, loginInformations.UserKey);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public static LoginInformations ValidLogin()
+        {
+            try
+            {
+                var loginInformations = GetLoginInformations();
+
+                return ValidLogin(loginInformations.LoginToken, loginInformations.UserKey);
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        internal static LoginInformations ValidLogin(string token, string user_valid_key)
+        {
+            OAuthEntities db = new OAuthEntities();
+            var context = System.Web.HttpContext.Current;
+            //Obtém a autenticação deste usuário
+            Authentication logToken = db.Authentication.FirstOrDefault(fs => fs.IPAdress == context.Request.UserHostAddress);
+
+            if (logToken == null)
+            {
+                return new LoginInformations(user_valid_key, token) { IsValid = false, Message = "This 'login token' does not exist or does not exist on the system or is wrong." };
+            }
+
+            if (!PasswordCompare(logToken.Token, token.ToString()))
+            {
+                return new LoginInformations(user_valid_key, token) { IsValid = false, Message = "This 'login token' does not exist or does not exist on the system or is wrong." };
+            }
+
+            //Valida o IP fornecido
+            if (context.Request.UserHostAddress != logToken.IPAdress)
+            {
+                return new LoginInformations(user_valid_key, token) { IsValid = false, Message = "This 'login token' does not validing for your IP." };
+            }
+
+            //Valida a chave de verificação da tabela User.
+            if (logToken.LoginFirstStep1.Account1.Key != user_valid_key)
+            {
+                return new LoginInformations(user_valid_key, token) { IsValid = false, Message = "This 'login token' does not validing for your IP." };
+            }
+
+            return new LoginInformations(user_valid_key, token) { IsValid = true, Message = "This login validation result is success" };
+        }
+        internal static LoginInformations GetLoginInformations()
+        {
+            string userKey = string.Empty;
+            string loginToken = string.Empty;
+            try
+            {
+                loginToken = HttpContext.Current.Request.Cookies.Get("Autorization").Values.Get("Token");
+                userKey = HttpContext.Current.Request.Cookies.Get("Autorization").Values.Get("AccountKey");
+            }
+            catch (NullReferenceException)
+            {
+                try
+                {
+                    loginToken = System.Web.HttpContext.Current.Request.Headers.Get("Autorization");
+                    userKey = System.Web.HttpContext.Current.Request.Headers.Get("Account");
+                }
+                catch (NullReferenceException)
+                {
+                    try
+                    {
+                        userKey = System.Web.HttpContext.Current.Request.QueryString.Get("account_key");
+                        loginToken = System.Web.HttpContext.Current.Request.QueryString.Get("autorization_token");
+                    }
+                    catch (NullReferenceException)
+                    {
+                        userKey = string.Empty;
+                        loginToken = string.Empty;
+                    }
+                }
+            }
+            return new LoginInformations(userKey, loginToken);
+        }
+        #endregion
+
+        public class LoginInformations
+        {
+            public string UserKey { get; set; }
+            public string LoginToken { get; set; }
+            public bool IsValid { get; set; }
+            public string Message { get; set; }
+            public LoginInformations(string userKey, string loginToken)
+            {
+                UserKey = userKey;
+                LoginToken = loginToken;
+                IsValid = false;
+                Message = "No Message here!";
+            }
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

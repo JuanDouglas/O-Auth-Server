@@ -22,5 +22,9 @@ namespace OAuth.Server.Tests.Controllers
             Assert.IsTrue(token != string.Empty);
             Assert.IsTrue(token.Length != (int)LoginOAuthController.TokenSize.Big);
         }
+
+        public void ValidLogin() {
+        LoginOAuthController.
+        }
     }
 }

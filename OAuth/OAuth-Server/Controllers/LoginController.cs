@@ -9,8 +9,7 @@ namespace OAuth.Server.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.Post = "none";
-            return FirstStep("none");
+            return RedirectToAction("FirstStep","Login",new { post="none"});
         }
 
         [HttpGet]

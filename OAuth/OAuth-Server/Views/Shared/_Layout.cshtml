@@ -1,100 +1,113 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        @Html.ActionLink("Show your Products", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/Home"><img src="~/Resources/cristal.png" width="30" />Nexus Company</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse" id="navbarColor03">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">@Html.ActionLink("Página Inicial", "Index", "Home", new { area = "" }, htmlAttributes: new { @class = "nav-link" })</li>
-                <li class="nav-item">@Html.ActionLink("API", "Index", "Help", new { area = "" }, htmlAttributes: new { @class = "nav-link" })</li>
-                @{
-                    var login_token_cookie = Request.Cookies["login_token"];
-                    UriBuilder builder = new UriBuilder(Request.Url.AbsoluteUri);
-                    var user_key_cookie = Request.Cookies["user_key"];
-                    string user_key = string.Empty;
-                    string login_token = string.Empty;
-                    string href = string.Empty;
-                    bool logued = false;
-
-
-                    if (user_key_cookie != null)
-                    {
-                        try
-                        {
-                            //var loginInformations =.API.Controllers.LoginController.ValidLogin();
-                            logued = false;
-                            if (!logued)
-                            {
-                                var user_keyCookie = Request.Cookies["user_key"];
-                                user_keyCookie.Expires = DateTime.Now;
-                                Response.Cookies.Set(user_keyCookie);
-                                var login_tokenCookie = Request.Cookies["login_token"];
-                                login_tokenCookie.Expires = DateTime.Now;
-                                Response.Cookies.Set(login_tokenCookie);
-                            }
-                        }
-                        catch (global::System.Exception)
-                        {
-                            user_key = string.Empty;
-                            login_token = string.Empty;
-                        }
-                    }
-
+                <li class="nav-item">
+                    <a class="nav-link" href="/Products">Produtos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">API DOC</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/Help/Api/PUT-api-Login">Create login</a>
+                        <a class="dropdown-item" href="/Help/Api/GET-Login-Authetication_user_pas">Authentication</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/Help">API Help</a>
+                    </div>
+                </li>
+            </ul>
+            <!-- Menu do login -->
+            <form class="form-inline my-2 my-lg-0" style="display: contents;cursor: pointer">
+                @if (true)
+                {
+                    <a href="/Login?post=home" class="text-success" style="font-size: 1.05rem;margin-left:1rem">Entrar</a>
                 }
-                @{
-                    if (logued)
-                    {
-                        <li class="nav-link nav-item dropdown" style="margin-right: 3rem;">
-
+                else
+                {
+                    @*<li class="nav-link nav-item dropdown" style="margin-right: 3rem;">
                             <a class="dropdown-toggle text-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.05rem;text-decoration:none">
-                                <img class="img-icon" width="35" height="35" src="~/Resources/ic_company_round.png" />
+                                <img class="img-icon" width="35" height="35" src="@src" />@lgmodel.UserName
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item disabled"><b id="TextName">Sua Loja</b></a>
+                                <a class="dropdown-item disabled"><b id="TextName">@lgmodel.FirstName</b></a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/Product/MyProducts">Seus produtos</a>
-                                <a class="dropdown-item" href="/Categories/MyCategories">Suas Categorias</a>
                                 @{
-                                    builder.Path = "api/Login/Authetication/Logout";
-
-                                    var parseQuery = HttpUtility.ParseQueryString($"isWeb={true}&login_token={login_token}&user_key={user_key}&thisAdress={true}&ipAdress=");
-                                    parseQuery["url_post"] = Request.Url.AbsoluteUri;
-                                    builder.Query = parseQuery.ToString();
+                                    builder.Path = "Users/Profile";
+                                    string html = Html.AntiForgeryToken().ToHtmlString();
+                                    string[] splitHtml = html.Split(' ');
+                                    string valueField = splitHtml[splitHtml.Length - 2];
+                                    string[] value = valueField.Split('\"');
+                                    var query = HttpUtility.ParseQueryString(string.Empty);
+                                    query["login_token"] = login_token;
+                                    query["user_key"] = user_key;
+                                    builder.Query = query.ToString();
+                                    href = builder.ToString();
                                 }
-                                <button class="btn btn-outline-danger col-md-10" onclick="location.href='@builder.Uri.AbsoluteUri'" style="padding: 1.4pt;margin: 0.25rem 1rem;width: 80%;">Sair</button>
+                                <a class="dropdown-item" href="@href">Seu Perfil</a>
+                                @{
+                                    builder.Path = "UserCart/View";
+                                    builder.Query = $"login_token={login_token}&user_key={user_key}";
+                                    href = builder.ToString();
+                                }
+                                <a class="dropdown-item" href="@href">Carrinho</a>
+                                <a class="dropdown-item" href="#">Seus Pedidos</a>
+                                <a class="dropdown-item" href="#">
+                                    Notificações
+                                    <span class="badge badge-pill badge-success" style="margin-left: 0.60rem;">0</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                @{
+                                    builder.Path = "Logins/Logout";
+                                    query = HttpUtility.ParseQueryString(string.Empty);
+                                    query["url_post"] = Request.Url.AbsoluteUri;
+                                    query["isWeb"] = true.ToString();
+                                    builder.Query = query.ToString();
+                                    href = builder.ToString();
+                                    builder.Path = string.Empty;
+                                    builder.Query = string.Empty;
+                                }
+                                <button class="btn btn-outline-danger col-md-10" onclick="location.href='@href'" style="padding: 1.4pt;margin: 0.25rem 1rem;width: 80%;">Sair</button>
                             </div>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <form class="form-inline my-2 my-lg-0" style="display: contents;cursor: pointer">
-                                <a href="/Login?post=none" class="text-success" style="font-size: 1.05rem;margin-left:1rem">Entrar</a>
-                            </form>
-                        </li>
-                    }
+                        </li>*@
                 }
-            </ul>
+            </form>
         </div>
     </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Meu Aplicativo ASP.NET</p>
+            <p>
+                &copy; @DateTime.Now.Year -
+                <img src="~/Resources/cristal_so_borda.png" width="20" href="" /> Nexus Company. |
+                <a href="Home/Terms">Termos de Uso</a> -
+                <a href="Home/Policy">Pol&iacute;tica de privacidade.</a> |
+                <a href="https://www.facebook.com/JuanGamer076"><img src="~/Resources/facebook.png" width="25" /></a>
+                <a href="https://www.instagram.com/juan_douglasbsb/"><img src="~/Resources/instagram_black_logo.png" width="25" /></a>
+                <a href="https://twitter.com/JuanDouglasLim2"><img src="~/Resources/twitter.png" width="25" /></a>
+                <a href="https://www.github.com/JuanDouglas"><img src="~/Resources/github-logo_.png" width="25" /></a>
+            </p>
         </footer>
     </div>
 

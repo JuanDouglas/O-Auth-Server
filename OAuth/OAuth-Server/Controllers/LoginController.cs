@@ -13,14 +13,14 @@ namespace OAuth.Server.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return RedirectToAction("FirstStep", "Login",routeValues: new { post = "none" });
+            return FirstStep("none");
         }
 
         [HttpGet]
         public ActionResult FirstStep(string post)
         {
             ViewBag.Post = post;
-            return View("");
+            return View("FirstStep");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -14,5 +14,15 @@ namespace OAuth.Server.Controllers
 
             return View();
         }
+        public ActionResult Terms()
+        {
+            return View();
+        }
+        public ActionResult Policy()
+        {
+            ViewBag.Title = "Home Page";
+
+            return View();
+        }
     }
 }

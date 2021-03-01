@@ -35,6 +35,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <LegacyPublishPropertiesPageEnabled>true</LegacyPublishPropertiesPageEnabled>
+    <IncludeIisSettings>true</IncludeIisSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -223,9 +226,15 @@
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\bootstrap-default.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -271,6 +280,32 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>OAuthDBModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="Resources\cristal_com_bordar.png" />
+    <None Include="Resources\cristal_so_borda.png" />
+    <None Include="Resources\emoji_bad.png" />
+    <None Include="Resources\facebook.png" />
+    <None Include="Resources\facebook_message.png" />
+    <None Include="Resources\github-logo_.png" />
+    <None Include="Resources\instagram_black_logo.png" />
+    <None Include="Resources\instagram_icon.png" />
+    <None Include="Resources\less_beige.gif" />
+    <None Include="Resources\less_orange.gif" />
+    <None Include="Resources\map_marker_con.png" />
+    <None Include="Resources\more_purple.gif" />
+    <None Include="Resources\more_yellow.gif" />
+    <None Include="Resources\novo-produto.png" />
+    <None Include="Resources\o-email.png" />
+    <None Include="Resources\person.png" />
+    <None Include="Resources\return_policy.txt" />
+    <None Include="Resources\shopping-car.png" />
+    <None Include="Resources\terms_of_use.txt" />
+    <None Include="Resources\TermsTXT.html" />
+    <None Include="Resources\truck_image.png" />
+    <None Include="Resources\twitter.png" />
+    <None Include="Resources\whatsapp.png" />
+    <None Include="Resources\coming_soon_background.png" />
+    <None Include="Resources\ComingSoon.html" />
+    <None Include="Resources\cristal.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -398,6 +433,8 @@
     <Content Include="Views\Login\SecondStep.cshtml" />
     <Content Include="Views\Login\Create.cshtml" />
     <Content Include="Views\Login\FirstStep.cshtml" />
+    <Content Include="Views\Home\Terms.cshtml" />
+    <Content Include="Views\Home\Policy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -414,6 +451,12 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -429,16 +472,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>56260</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44365/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

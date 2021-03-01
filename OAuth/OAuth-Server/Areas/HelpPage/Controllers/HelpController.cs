@@ -1,8 +1,8 @@
+using OAuth.Server.Areas.HelpPage.ModelDescriptions;
+using OAuth.Server.Areas.HelpPage.Models;
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using OAuth.Server.Areas.HelpPage.ModelDescriptions;
-using OAuth.Server.Areas.HelpPage.Models;
 
 namespace OAuth.Server.Areas.HelpPage.Controllers
 {

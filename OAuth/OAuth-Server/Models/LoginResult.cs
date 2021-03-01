@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace OAuth.Server.Models
 {
@@ -20,7 +18,7 @@ namespace OAuth.Server.Models
             Date = authentication.Date;
             UserAgent = authentication.User_Agent;
             AccountKey = authentication.LoginFirstStep1.Account1.Key;
-            IP = new IPAdressResult(db.IP.FirstOrDefault(fs=>fs.Adress == authentication.IPAdress));
+            IP = new IPAdressResult(db.IP.FirstOrDefault(fs => fs.Adress == authentication.IPAdress));
         }
     }
 }

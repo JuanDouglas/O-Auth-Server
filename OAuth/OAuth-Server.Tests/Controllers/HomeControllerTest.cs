@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OAuth.Server;
 using OAuth.Server.Controllers;
 using System.Web.Mvc;
 

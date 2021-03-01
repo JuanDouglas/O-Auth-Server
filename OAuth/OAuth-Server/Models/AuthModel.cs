@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OAuth.Server.Models
 {
@@ -11,7 +7,7 @@ namespace OAuth.Server.Models
         [Required]
         public string User { get; set; }
         [Required]
-        public string  Password { get; set; }
+        public string Password { get; set; }
         public string Post { get; set; }
         public string Key { get; set; }
     }

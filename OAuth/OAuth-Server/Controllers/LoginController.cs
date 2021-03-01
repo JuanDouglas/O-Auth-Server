@@ -1,8 +1,4 @@
 ﻿using OAuth.Server.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace OAuth.Server.Controllers
@@ -25,8 +21,9 @@ namespace OAuth.Server.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult FirstStep([Bind(Include = "Post,User")]AuthModel model) {
-            return RedirectToAction("FirstStep", "api/OAuth/Login", new { post = model.Post, user=model.User, web_view=true});
+        public ActionResult FirstStep([Bind(Include = "Post,User")] AuthModel model)
+        {
+            return RedirectToAction("FirstStep", "api/OAuth/Login", new { post = model.Post, user = model.User, web_view = true });
         }
         public ActionResult FirstStepFail(string user, string post)
         {
@@ -35,7 +32,7 @@ namespace OAuth.Server.Controllers
         }
 
         [HttpGet]
-        public ActionResult SecondStep(string key,string post)
+        public ActionResult SecondStep(string key, string post)
         {
             ViewBag.Post = post;
             ViewBag.Key = key;

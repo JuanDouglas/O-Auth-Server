@@ -1,12 +1,9 @@
 ﻿using OAuth.Server.Models.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace OAuth.Server.Models
 {
-    public class IPAdressResult 
+    public class IPAdressResult
     {
         /// <summary>
         /// IP Adress.
@@ -23,7 +20,7 @@ namespace OAuth.Server.Models
         public IPAdressResult(IP iP)
         {
             Adress = iP.Adress;
-            Confiance = (IPConfiance)Enum.Parse(typeof(IPConfiance),iP.Confiance.ToString());
+            Confiance = (IPConfiance)Enum.Parse(typeof(IPConfiance), iP.Confiance.ToString());
             AlreadyBeenBanned = iP.AlreadyBeenBanned;
         }
     }

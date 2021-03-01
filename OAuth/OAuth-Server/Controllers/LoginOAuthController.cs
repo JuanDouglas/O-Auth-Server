@@ -153,16 +153,16 @@ namespace OAuth.Server.Controllers
             HttpResponseMessage httpResponse = new HttpResponseMessage(HttpStatusCode.Redirect);
             bool existEquals = true;
 
-            if (post==null)
+            if (post == null)
             {
                 post = string.Empty;
             }
-            if (post==string.Empty||post=="none")
+            if (post == string.Empty || post == "none")
             {
                 UriBuilder builder = new UriBuilder(Request.RequestUri);
                 builder.Path = string.Empty;
                 builder.Query = string.Empty;
-                post = builder.ToString(); 
+                post = builder.ToString();
             }
 
             /* 
@@ -226,8 +226,6 @@ namespace OAuth.Server.Controllers
                 });
 
                 await db.SaveChangesAsync();
-                var result = await new HttpClient().GetAsync("");
-                result.;
 
                 if (!web_view)
                 {
@@ -298,7 +296,7 @@ namespace OAuth.Server.Controllers
                         {"AccountKey",authentication.LoginFirstStep1.Account1.Key }
                     })
                 });
-            httpResponse.Headers.Add("Location",post);
+            httpResponse.Headers.Add("Location", post);
             return ResponseMessage(httpResponse);
         }
 

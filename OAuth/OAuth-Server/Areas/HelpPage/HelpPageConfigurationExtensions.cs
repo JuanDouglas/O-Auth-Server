@@ -1,3 +1,5 @@
+using OAuth.Server.Areas.HelpPage.ModelDescriptions;
+using OAuth.Server.Areas.HelpPage.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,8 +13,6 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
-using OAuth.Server.Areas.HelpPage.ModelDescriptions;
-using OAuth.Server.Areas.HelpPage.Models;
 
 namespace OAuth.Server.Areas.HelpPage
 {

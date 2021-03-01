@@ -1,12 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OAuth.Server;
 using OAuth.Server.Controllers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http;
 
 namespace OAuth.Server.Tests.Controllers
 {

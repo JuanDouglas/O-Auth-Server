@@ -13,5 +13,6 @@ namespace OAuth.Server.Models
         [Required]
         public string  Password { get; set; }
         public string Post { get; set; }
+        public string Key { get; set; }
     }
 }

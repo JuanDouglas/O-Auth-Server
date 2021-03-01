@@ -115,7 +115,7 @@ namespace OAuth.Server.Controllers
             {
                 return Ok(new LoginFirstStepResult(loginFirstStep));
             }
-            return Redirect(GetPathQuery("OAuth/SecondStep", new Dictionary<string, string>
+            return Redirect(GetPathQuery("Login/SecondStep", new Dictionary<string, string>
             {
                 { "key", loginFirstStep.Token },
                 { "post", post }
@@ -204,7 +204,7 @@ namespace OAuth.Server.Controllers
                 {
                     return NotFound();
                 }
-                return Redirect(GetPathQuery("OAuth/SecondStepFail", new Dictionary<string, string>
+                return Redirect(GetPathQuery("Login/StepFail", new Dictionary<string, string>
             {
                 { "post", post }
             }));
@@ -243,7 +243,7 @@ namespace OAuth.Server.Controllers
              * Caso seja igual a do banco continua a execução0.
              * Caso contrário irá retornar 'Unathorized' é adicionar a tentativa falha ao banco de dados.
              */
-            if (!PasswordCompare(account.Password, pwd))
+            if (!PasswordCompare(loginFirstStep.Account1.Password, pwd))
             {
                 db.FailAttemp.Add(new FailAttemp()
                 {

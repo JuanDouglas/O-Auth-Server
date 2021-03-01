@@ -8,6 +8,9 @@ namespace OAuth.Server.Models.Enums
     public enum AttempType : uint
     {
         FirstStepAttemp,
-        SecondStepAttemp
+        UserNotFound,
+        IncorrectPassword,
+        SecondStepAttemp,
+        IPNotEqual
     }
 }

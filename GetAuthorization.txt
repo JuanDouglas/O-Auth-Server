@@ -1,0 +1,3 @@
+Origin Server (ApplicationKey) --> Auth Server (post url) -->
+Login Server (PostUrl) --> Auth Server (AuthorizationKey,AuthenticationKey,UserAccountKey) --> 
+Origin Server

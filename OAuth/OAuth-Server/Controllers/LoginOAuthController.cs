@@ -2,7 +2,11 @@
 using OAuth.Server.Models.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -14,7 +18,8 @@ namespace OAuth.Server.Controllers
     public class LoginOAuthController : ApiController
     {
         private OAuthEntities db = new OAuthEntities();
-        #region LoginStep´s
+
+        #region Login Step´s
 
         #region FirstStep
         /// <summary>
@@ -65,7 +70,7 @@ namespace OAuth.Server.Controllers
                 {
                     Date = DateTime.UtcNow,
                     IPAdress = userIP.Adress,
-                    AttempType = (int)AttempType.FirstStepAttemp
+                    AttempType = (int)AttempType.UserNotFound
                 });
                 await db.SaveChangesAsync();
 
@@ -73,8 +78,11 @@ namespace OAuth.Server.Controllers
                 {
                     return NotFound();
                 }
-
-                return Redirect(GetUri("OAuth/FirstStepFail", $"user={user}&post={post}"));
+                return Redirect(GetPathQuery("OAuth/FirstStepFail", new Dictionary<string, string>
+                {
+                    { "user", loginFirstStep.Token },
+                    { "post", post }
+                }));
             }
 
             loginFirstStep = new LoginFirstStep()
@@ -107,19 +115,32 @@ namespace OAuth.Server.Controllers
             {
                 return Ok(new LoginFirstStepResult(loginFirstStep));
             }
+            return Redirect(GetPathQuery("OAuth/FirstStep", new Dictionary<string, string>
+            {
+                { "key", loginFirstStep.Token },
+                { "post", post }
+            }));
+        }
 
-            return Redirect(GetUri("OAuth/FirstStep", $"first_step_key={loginFirstStep.Token}&post={post}"));
+        public Uri GetPathQuery(string path, Dictionary<string, string> keys)
+        {
+            var pathQuery = HttpUtility.ParseQueryString(string.Empty);
+            foreach (var item in keys)
+            {
+                pathQuery.Add(item.Key, item.Value);
+            }
+            return GetUri(path, path.ToString());
         }
         #endregion
 
         #region SecondStep
         /// <summary>
-        /// 
+        /// Second Step for Authentication.
         /// </summary>
         /// <param name="pwd">Password</param>
         /// <param name="key">First Step Key</param>
         /// <param name="is_api">Request result for API(true) or WebService(false).</param>
-        /// <param name="post"></param>
+        /// <param name="post">Defines '{user-key}'</param>
         /// <returns></returns>
         [HttpGet]
         [Route("SecondStep")]
@@ -128,8 +149,29 @@ namespace OAuth.Server.Controllers
         {
             LoginFirstStep loginFirstStep = db.LoginFirstStep.FirstOrDefault(fs => fs.Token == key);
             IP userIP = db.IP.FirstOrDefault(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
+            Account account = db.Account.FirstOrDefault(fs => fs.ID == loginFirstStep.ID);
+            HttpResponseMessage httpResponse = new HttpResponseMessage(HttpStatusCode.Redirect);
             bool existEquals = true;
 
+            /* 
+             * Valida se o IP já esta cadastrado na base de dados.
+             * Caso não esteja adicionado irá adicionar ao banco de dados.
+             * Caso contrário não faz nada.
+             */
+            if (userIP == null)
+            {
+                db.IP.Add(new IP()
+                {
+                    Adress = HttpContext.Current.Request.UserHostAddress,
+                    AlreadyBeenBanned = false,
+                    Confiance = (int)IPConfiance.NONE
+                });
+
+                await db.SaveChangesAsync();
+
+                //Atualiza o valor do IP usado no método.
+                userIP = db.IP.FirstOrDefault(fs => fs.Adress == HttpContext.Current.Request.UserHostAddress);
+            }
 
             /*
              * Valida se o usuário iniciou o Login.
@@ -150,17 +192,104 @@ namespace OAuth.Server.Controllers
                 {
                     return NotFound();
                 }
-                return Redirect(GetUri("OAuth/SecondStepFail", $"post={post}"));
+                return Redirect(GetPathQuery("OAuth/SecondStepFail", new Dictionary<string, string>
+            {
+                { "post", post }
+            }));
             }
 
 
+            /*
+             * Valida se o IP fornecido é o mesmo do primeiro passo.
+             * Caso seja o mesmo desconsidere.
+             * Caso contrário irá retornar não autorizado.
+             */
+            if (loginFirstStep.IPAdress != userIP.Adress)
+            {
+                db.FailAttemp.Add(new FailAttemp()
+                {
+                    Date = DateTime.UtcNow,
+                    IPAdress = userIP.Adress,
+                    AttempType = (int)AttempType.SecondStepAttemp
+                });
+
+                await db.SaveChangesAsync();
+
+                if (is_api)
+                {
+                    return Unauthorized();
+                }
+                return Redirect(GetPathQuery("OAuth/StepFail", new Dictionary<string, string>
+            {
+
+                { "post", post }
+            }));
+            }
+
+            /*
+             * Valida a senha fornecida.
+             * Caso seja igual a do banco continua a execução0.
+             * Caso contrário irá retornar 'Unathorized' é adicionar a tentativa falha ao banco de dados.
+             */
+            if (!PasswordCompare(account.Password, pwd))
+            {
+                db.FailAttemp.Add(new FailAttemp()
+                {
+                    Date = DateTime.UtcNow,
+                    IPAdress = userIP.Adress,
+                    AttempType = (int)AttempType.IncorrectPassword
+                });
+
+                await db.SaveChangesAsync();
+
+                if (is_api)
+                {
+                    return Unauthorized();
+                }
+
+                return Redirect(GetPathQuery("OAuth/StepFail", new Dictionary<string, string>
+            {
+                { "post", post }
+            })); ;
+            }
 
 
+            Authentication authentication = new Authentication()
+            {
+                Date = DateTime.UtcNow,
+                IPAdress = userIP.Adress,
+                LoginFirstStep = loginFirstStep.ID,
+                User_Agent = HttpContext.Current.Request.UserAgent
+            };
 
-            throw new NotImplementedException();
+            //Obtém um novo token até que não exista nenhum igual.
+            do
+            {
+                authentication.Token = GenerateToken(TokenSize.Default);
+                if (db.Authentication.FirstOrDefault(fs => fs.Token == loginFirstStep.Token) == null)
+                {
+                    existEquals = false;
+                }
+            } while (existEquals);
+
+            if (is_api)
+            {
+                return Ok(new LoginResult(authentication));
+            }
+
+            httpResponse.Headers.AddCookies(
+                new List<CookieHeaderValue>() {
+                    new CookieHeaderValue("Authentication", new NameValueCollection() {
+                        {"Token", authentication.Token},
+                        {"AccountKey",authentication.LoginFirstStep1.Account1.Key }
+                    })
+                });
+            httpResponse.Headers.Add("Location",post);
+            return ResponseMessage(httpResponse);
         }
 
         #endregion
+
         #endregion
 
         #region Cryptography services
@@ -185,6 +314,8 @@ namespace OAuth.Server.Controllers
         }
 
         #endregion
+
+
         public enum TokenSize
         {
             Small = 17,
@@ -225,6 +356,11 @@ namespace OAuth.Server.Controllers
                 }
             }
             return result;
+        }
+
+        public static string GetQuery(IDictionary<string, string> keyValues)
+        {
+            throw new NotImplementedException();
         }
     }
 }

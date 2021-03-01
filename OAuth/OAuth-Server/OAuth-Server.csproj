@@ -196,6 +196,7 @@
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginFirstStepResult.cs" />
+    <Compile Include="Models\LoginResult.cs" />
     <Compile Include="Models\OAuthDBModel.Context.cs">
       <DependentUpon>OAuthDBModel.Context.tt</DependentUpon>
       <DesignTime>True</DesignTime>

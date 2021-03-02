@@ -178,6 +178,7 @@
     <Compile Include="Models\Account.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\AccountResult.cs" />
     <Compile Include="Models\Application.cs">
       <DependentUpon>OAuthDBModel.tt</DependentUpon>
@@ -423,11 +424,11 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Login\Create.cshtml" />
     <Content Include="Views\Login\FirstStep.cshtml" />
     <Content Include="Views\Home\Terms.cshtml" />
     <Content Include="Views\Home\Policy.cshtml" />
     <Content Include="Views\Login\SecondStep.cshtml" />
+    <Content Include="Views\Login\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

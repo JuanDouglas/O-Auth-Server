@@ -1,4 +1,5 @@
 ﻿using OAuth.Server.Models;
+using System;
 using System.Web.Mvc;
 
 namespace OAuth.Server.Controllers
@@ -17,6 +18,13 @@ namespace OAuth.Server.Controllers
         {
             ViewBag.Post = post;
             return View("FirstStep");
+        }
+
+        [HttpGet]
+        public ActionResult FirstStepFail(string post)
+        {
+            ViewBag.Post = post;
+            return View("FirstStepFail");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -42,6 +50,15 @@ namespace OAuth.Server.Controllers
         public ActionResult SecondStep([Bind(Include = "Post,Password,Key")] AuthModel model)
         {
             return RedirectToAction("SecondStep", "api/OAuth/Login", new { post = model.Post, pwd = model.Password, web_view = true, key = model.Key });
+        }
+
+        public ActionResult Create() {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Create([Bind(Include = "IsCompany,UserName,Email,Password,ConfirmPassword")]AccountModel accountModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

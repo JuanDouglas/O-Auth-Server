@@ -79,9 +79,9 @@ namespace OAuth.Server.Controllers
                 {
                     return NotFound();
                 }
+
                 return Redirect(GetPathQuery("OAuth/FirstStepFail", new Dictionary<string, string>
                 {
-                    { "user", loginFirstStep.Token },
                     { "post", post }
                 }));
             }

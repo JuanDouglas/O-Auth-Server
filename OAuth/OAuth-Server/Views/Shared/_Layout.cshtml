@@ -9,9 +9,9 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
+<body style="background: url(../../Resources/coming_soon_background.png)">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/Home"><img src="~/Resources/cristal.png" width="30" />Nexus Company</a>
+        <a class="navbar-brand" href="~/Home"><img src="~/Resources/cristal.png" width="30" />Nexus Company</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -94,20 +94,49 @@
             </form>
         </div>
     </nav>
+
+    @*<div class="fab">
+        <button class="main">
+        </button>
+        <ul>
+            <li>
+                <label for="opcao1">Whatsapp</label>
+                <button id="opcao1" onclick="location.href = 'https://api.whatsapp.com/send?phone=5561992606441'" style="background-color: #1ebea5">
+                    <img src="/Resources/whatsapp.png" width="27">
+                </button>
+            </li>
+            <li>
+                <label for="opcao2">Messager</label>
+                <button id="opcao2" onclick="location.href = 'https://www.messenger.com/t/juangamer076'" style="background-color: #3a6ec7;">
+                    <img src="/Resources/facebook_message.png" width="27">
+                </button>
+            </li>
+            <li>
+                <label for="opcao3">Instagram</label>
+                <a href="https://www.instagram.com/juan_douglasbsb/">
+                    <button id="opcao3" onclick="location.href = 'https://www.instagram.com/juan_douglasbsb/'" style="background-color: #e55655;">
+                        <img src="/Resources/instagram_icon.png" width="27">
+                    </button>
+                </a>
+            </li>
+        </ul>
+    </div>*@
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>
-                &copy; @DateTime.Now.Year -
-                <img src="~/Resources/cristal_so_borda.png" width="20" href="" /> Nexus Company. |
-                <a href="Home/Terms">Termos de Uso</a> -
-                <a href="Home/Policy">Pol&iacute;tica de privacidade.</a> |
-                <a href="https://www.facebook.com/JuanGamer076"><img src="~/Resources/facebook.png" width="25" /></a>
-                <a href="https://www.instagram.com/juan_douglasbsb/"><img src="~/Resources/instagram_black_logo.png" width="25" /></a>
-                <a href="https://twitter.com/JuanDouglasLim2"><img src="~/Resources/twitter.png" width="25" /></a>
-                <a href="https://www.github.com/JuanDouglas"><img src="~/Resources/github-logo_.png" width="25" /></a>
-            </p>
+            <center>
+                <p>
+                    &copy; @DateTime.Now.Year -
+                    <img src="~/Resources/cristal_so_borda.png" width="15" href="" /> Nexus Company. |
+                    <a href="~/Home/Terms">Termos de Uso</a> -
+                    <a href="~/Home/Policy">Pol&iacute;tica de privacidade.</a> |
+                    <a href="https://www.facebook.com/JuanGamer076"><img src="~/Resources/facebook.png" width="20" /></a>
+                    <a href="https://www.instagram.com/juan_douglasbsb/"><img src="~/Resources/instagram_black_logo.png" width="20" /></a>
+                    <a href="https://twitter.com/JuanDouglasLim2"><img src="~/Resources/twitter.png" width="20" /></a>
+                    <a href="https://www.github.com/JuanDouglas"><img src="~/Resources/github-logo_.png" width="20" /></a>
+                </p>
+            </center>
         </footer>
     </div>
 

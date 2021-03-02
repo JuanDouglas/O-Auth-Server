@@ -4,19 +4,40 @@
     ViewBag.Title = "Second Step";
 }
 
-@using (Html.BeginForm("SecondStep", "Login", new { post = ViewBag.Post }))
-{
-    @Html.AntiForgeryToken()
-    @Html.Hidden("Post", (string)ViewBag.Post)
-    @Html.Hidden("Key", (string)ViewBag.Key);
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Sua senha", type="password"} })
-            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+<body >
+    <center>
+        <div class="card border-success mb-3" style="max-width:24rem;margin-top:25%;">
+            <div class="card-header">
+                <b>Login na Nexus</b>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("SecondStep", "Login", new { post = ViewBag.Post }))
+                {
+
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("Post", (string)ViewBag.Post)
+                    @Html.Hidden("Key", (string)ViewBag.Key);
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Sua senha", type = "password" } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align:left;padding-left:15px">
+                        @Html.ActionLink("Voltar ao Login", "FirstStep", "Login", new { })
+                    </div>
+                    <div style="text-align:right"><input type="submit" class="btn btn-outline-success" value="Próximo" /></div>
+                }
+            </div>
         </div>
-    </div>
-    <input type="submit" class="btn btn-outline-success" value="Próximo" />
-}
+    </center>
+</body>
+
+
+
+
+
+
 

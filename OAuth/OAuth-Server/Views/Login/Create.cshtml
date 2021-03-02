@@ -4,59 +4,80 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Account</h4>
-    <hr />
-    <div class="form-group">
-        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+<center style="margin-top:5rem">
+
+    @*<div class="alert alert-dismissible alert-warning" style="max-width: 27rem;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Bem vindo!</strong> 
+        <p>A <a href="#" class="alert-link">Nexus</a> tem vários recursos e soluções para você, basta criar sua conta e fazer login para continuar.</p>
+    </div>*@
+
+    <div class="card border-success" style="max-width:26rem; text-align:left;">
+        <div class="card-header border-success">
+            <center><b style="text-shadow: 0 0 black;">Crie sua conta já!</b></center>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model=>model.post);
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", placeholder = "Seu nome de usuário." } })
+                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Seu e-mail." } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password", placeholder = "Crie uma senha." } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", type = "password", placeholder = "Agora confirme sua senha." } })
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="custom-control custom-switch col-md-12 form-group" style="margin-left:15px;">
+                        @Html.EditorFor(model => model.IsCompany, new { htmlAttributes = new { @class = "custom-control-input", @checked = true } })
+                        @Html.LabelFor(model => model.IsCompany, htmlAttributes: new { @class = "custom-control-label" })
+                    </div>
+                    <div class="form-group" style="        display: flex;
+        margin-top: -0.5rem;
+        margin-left: -0.5rem;text-shadow:none;">
+                        @Html.EditorFor(model => model.AcceptTerms, new { htmlAttributes = new { @class = "form-control", @type = "checkbox", @style = "width: 0.8rem;margin-left: 2rem;transform: scale(1.25);", @required = "true" } })
+                        <label for="terms" style="margin-top: 0.70rem;margin-left: 0.50rem;">Aceito os <i><a href="..\Home\Terms" target='_BLANK'>Termos</a></i> e <i><a href="..\Home\Policy" target='_BLANK'>Política de privacidade</a></i>.</label>
+                    </div>
+                    <div class="form-group col-md-10">
+
+                        <div style="text-align:right">
+                            <input type="submit" value="Create" class="btn btn-outline-warning" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div>
+                @Html.ActionLink("Back to Login", "Index")
+            </div>
+
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password" } })
-            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", type = "password" } })
-            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="custom-control custom-switch col-md-12 form-group" style="margin-left:15px;">
-        @Html.EditorFor(model => model.IsCompany, new { htmlAttributes = new { @class = "custom-control-input", @checked = true } })
-        @Html.LabelFor(model => model.IsCompany, htmlAttributes: new { @class = "custom-control-label" })
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10" style="text-align:right">
-            <input type="submit" value="Create" class="btn btn-outline-warning" />
-        </div>
-    </div>
-</div>
-}
-
-<div>
-    @Html.ActionLink("Back to Login", "Index")
-</div>
+</center>

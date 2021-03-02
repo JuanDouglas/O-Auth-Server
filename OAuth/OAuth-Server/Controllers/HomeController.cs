@@ -12,11 +12,12 @@ namespace OAuth.Server.Controllers
         }
         public ActionResult Terms()
         {
+            ViewBag.Title = "Terms";
             return View();
         }
         public ActionResult Policy()
         {
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Policy";
 
             return View();
         }

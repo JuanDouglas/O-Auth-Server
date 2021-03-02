@@ -6,11 +6,13 @@
 
 <body style="background: url(../../Resources/coming_soon_background.png)">
     <center>
-        <div class="card border-success mb-3" style="max-width:24rem;margin-top:25%;">
+        <div class="card border-success mb-3" style="max-width:24rem;margin-top:10%;">
             <div class="card-header">
                 <b>Login na Nexus</b>
             </div>
             <div class="card-body">
+                <center> <div><img src="~/Resources/cristal.png" width="70" style="margin-bottom:20px"></div>
+                <p><b>NEXUS</b></p></center>
                 @using (Html.BeginForm("FirstStep", "Login", new { post = ViewBag.Post }))
                 {
                     @Html.AntiForgeryToken()
@@ -28,9 +30,9 @@
                         </div>
                     </div>
                     <div class="form-group" style="text-align:left;padding-left:15px">
-                        @Html.ActionLink("Não tenho conta.", "Create", "Login", new { })
+                       <a href="Login/Create?post=@ViewBag.Post"></a>
                     </div>
-                    <div style="text-align:right"><input type="submit" class="btn btn-outline-success" value="Próximo" /></div>
+                    <div class="form-group col-md-10" style="text-align:right"><input type="submit" class="btn btn-outline-success" value="Próximo" /></div>
                 }
             </div>
         </div>

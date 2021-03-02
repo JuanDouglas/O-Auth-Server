@@ -1,11 +1,14 @@
 ﻿using OAuth.Server.Models;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace OAuth.Server.Controllers
 {
     public class LoginController : Controller
     {
+        private OAuthEntities db = new OAuthEntities();
         // GET: Login
         [HttpGet]
         public ActionResult Index()
@@ -52,16 +55,43 @@ namespace OAuth.Server.Controllers
             return RedirectToAction("SecondStep", "api/OAuth/Login", new { post = model.Post, pwd = model.Password, web_view = true, key = model.Key });
         }
 
-        public ActionResult Create() {
-            return View();
+        public ActionResult Create(string post) {
+           
+            return View(new AccountModel() { post = post});
         }
         [HttpPost]
-        public ActionResult Create([Bind(Include = "IsCompany,UserName,Email,Password,ConfirmPassword")]AccountModel accountModel)
+        public async Task<ActionResult> Create([Bind(Include = "IsCompany,UserName,Email,Password,ConfirmPassword,AcceptTerms,post")]AccountModel accountModel)
         {
+            if (db.Account.FirstOrDefault(fs=>fs.Email == accountModel.Email)!=null)
+            {
+                ModelState.AddModelError("Email","Já existe um usuário com esse e-mail.");
+            }
+
+            if (db.Account.FirstOrDefault(fs => fs.Email == accountModel.UserName) != null)
+            {
+                ModelState.AddModelError("UserName", "Já existe um usuário com esse nome de usuário.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(accountModel);
             }
+
+            Account account = accountModel.GetAccount();
+
+            bool exist = true;
+            do
+            {
+                account.Key = LoginOAuthController.GenerateToken(LoginOAuthController.TokenSize.VeryBig);
+                if (db.Account.FirstOrDefault(fs=>fs.Key==account.Key)==null)
+                {
+                    exist = false;
+                }
+            } while (exist);
+
+            db.Account.Add(account);
+            await db.SaveChangesAsync();
+
             throw new NotImplementedException();
         }
     }

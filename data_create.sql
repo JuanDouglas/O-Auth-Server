@@ -4,6 +4,8 @@ CREATE TABLE [Account](
 [UserName] VARCHAR(500) UNIQUE NOT NULL,
 [Password] VARCHAR(100) NOT NULL,
 [Email] VARCHAR(500) UNIQUE NOT NULL,
+[IsCompany] BIT NOT NULL,
+[AcceptTermsDate] DATETIME NOT NULL,
 [ValidLogin] BIT NOT NULL,
 [CreateDate] DATETIME NOT NULL
 );

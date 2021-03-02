@@ -146,7 +146,7 @@ namespace OAuth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("SecondStep")]
-        [ResponseType(typeof(LoginFirstStepResult))]
+        [ResponseType(typeof(AccountResult))]
         public async Task<IHttpActionResult> LoginSecondStepAsync(string pwd, string key, bool web_view, string post)
         {
             LoginFirstStep loginFirstStep = await db.LoginFirstStep.FirstOrDefaultAsync(fs => fs.Token == key);

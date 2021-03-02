@@ -58,6 +58,10 @@ namespace OAuth.Server.Controllers
         [HttpPost]
         public ActionResult Create([Bind(Include = "IsCompany,UserName,Email,Password,ConfirmPassword")]AccountModel accountModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(accountModel);
+            }
             throw new NotImplementedException();
         }
     }
